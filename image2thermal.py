@@ -9,6 +9,7 @@ MAX_WIDTH = 800
 
 parser = argparse.ArgumentParser(description='Convert image for thermal printing.')
 parser.add_argument('filename', metavar='image', type=str, nargs=1, help='the filename of the image to be converted')
+parser.add_argument('-p', action='store_true', help='don\'t output printer data - just save a preview.png file')
 
 args = parser.parse_args()
 
@@ -20,6 +21,10 @@ if w > MAX_WIDTH:
     w, h = im.size
 
 im = im.convert('1')
+
+if args.p:
+    im.save('preview.png')
+    exit()
 
 sys.stdout.write('\x1b~G')
 line_len = chr(int(ceil(w/8.0)))
