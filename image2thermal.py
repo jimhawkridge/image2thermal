@@ -5,7 +5,8 @@ from math import ceil
 from PIL import Image
 import sys
 
-MAX_WIDTH = 800
+MAX_WIDTH = 420
+MARGIN = 23  # Or None if no margin required.
 
 parser = argparse.ArgumentParser(description='Convert image for thermal printing.')
 parser.add_argument('filename', metavar='image', type=str, nargs=1, help='the filename of the image to be converted')
@@ -25,6 +26,10 @@ im = im.convert('1')
 if args.p:
     im.save('preview.png')
     exit()
+
+if MARGIN is not None:
+    sys.stdout.write('\x1bl')
+    sys.stdout.write(chr(MARGIN))
 
 sys.stdout.write('\x1b~G')
 line_len = chr(int(ceil(w/8.0)))
